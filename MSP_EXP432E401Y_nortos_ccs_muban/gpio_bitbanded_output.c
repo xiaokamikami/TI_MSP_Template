@@ -57,6 +57,25 @@
 
 volatile uint32_t gpioState = 0;
 
+void GPIOJ_IRQHandler(void)
+{
+    uint32_t getIntStatus;
+
+    /* Get the interrupt status from the GPIO and clear the status */
+    getIntStatus = MAP_GPIOIntStatus(GPIO_PORTJ_BASE, true);
+
+    if((getIntStatus & GPIO_PIN_0) == GPIO_PIN_0)
+    {
+        MAP_GPIOIntClear(GPIO_PORTJ_BASE, getIntStatus);
+
+        /* Toggle the LED */
+       // MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_4,
+       //                  ~(MAP_GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_4)));
+        MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, 1);
+
+    }
+}
+
 void SysTick_Handler(void)
 {
     if(gpioState != 3)
@@ -90,10 +109,27 @@ int main(void)
 
     }
 
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOJ);
+    while(!(MAP_SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOJ)))
+    {
+    }
+
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+    while(!(MAP_SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF)))
+    {
+    }
     /* Configure the GPIO PN0-PN1 as output */
     MAP_GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, (GPIO_PIN_0 | GPIO_PIN_1));
+    MAP_GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, (GPIO_PIN_4 | GPIO_PIN_0));
+    MAP_GPIOPinWrite(GPIO_PORTF_BASE, (GPIO_PIN_4 | GPIO_PIN_0), 0);
     MAP_GPIOPinWrite(GPIO_PORTN_BASE, (GPIO_PIN_0 | GPIO_PIN_1), 0);
 
+    MAP_GPIOPinTypeGPIOInput(GPIO_PORTJ_BASE, GPIO_PIN_0);
+    GPIOJ->PUR |= GPIO_PIN_0;
+    MAP_GPIOIntTypeSet(GPIO_PORTJ_BASE, GPIO_PIN_0, GPIO_RISING_EDGE);
+    MAP_GPIOIntEnable(GPIO_PORTJ_BASE, GPIO_INT_PIN_0);
+
+    MAP_IntEnable(INT_GPIOJ);
     /* Enable the SysTick timer to generate an interrupt every 1 second */
     MAP_SysTickPeriodSet(systemClock);
     MAP_SysTickIntEnable();
