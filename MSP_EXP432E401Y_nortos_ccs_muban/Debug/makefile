@@ -10,9 +10,11 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./gpio_bitbanded_output.obj" \
+"./main.obj" \
 "./system_msp432e401y.obj" \
 "./ccs/startup_msp432e401y_ccs.obj" \
+"./config/key.obj" \
+"./config/pwm.obj" \
 "../msp432e401y.cmd" \
 $(GEN_CMDS__FLAG) \
 -l"ti/display/lib/display.aem4f" \
@@ -32,8 +34,10 @@ RMDIR := RMDIR /S/Q
 -include sources.mk
 -include subdir_vars.mk
 -include ccs/subdir_vars.mk
+-include config/subdir_vars.mk
 -include subdir_rules.mk
 -include ccs/subdir_rules.mk
+-include config/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -164,8 +168,8 @@ MSP_EXP432E401Y_nortos_ccs_muban.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "gpio_bitbanded_output.obj" "system_msp432e401y.obj" "ccs\startup_msp432e401y_ccs.obj" 
-	-$(RM) "gpio_bitbanded_output.d" "system_msp432e401y.d" "ccs\startup_msp432e401y_ccs.d" 
+	-$(RM) "main.obj" "system_msp432e401y.obj" "ccs\startup_msp432e401y_ccs.obj" "config\key.obj" "config\pwm.obj" 
+	-$(RM) "main.d" "system_msp432e401y.d" "ccs\startup_msp432e401y_ccs.d" "config\key.d" "config\pwm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

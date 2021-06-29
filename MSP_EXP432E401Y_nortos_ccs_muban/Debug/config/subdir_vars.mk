@@ -5,31 +5,28 @@
 SHELL = cmd.exe
 
 # Add inputs and outputs from these tool invocations to the build variables 
-CMD_SRCS += \
-../msp432e401y.cmd 
-
 C_SRCS += \
-../main.c \
-../system_msp432e401y.c 
+../config/key.c \
+../config/pwm.c 
 
 C_DEPS += \
-./main.d \
-./system_msp432e401y.d 
+./config/key.d \
+./config/pwm.d 
 
 OBJS += \
-./main.obj \
-./system_msp432e401y.obj 
+./config/key.obj \
+./config/pwm.obj 
 
 OBJS__QUOTED += \
-"main.obj" \
-"system_msp432e401y.obj" 
+"config\key.obj" \
+"config\pwm.obj" 
 
 C_DEPS__QUOTED += \
-"main.d" \
-"system_msp432e401y.d" 
+"config\key.d" \
+"config\pwm.d" 
 
 C_SRCS__QUOTED += \
-"../main.c" \
-"../system_msp432e401y.c" 
+"../config/key.c" \
+"../config/pwm.c" 
 
 
