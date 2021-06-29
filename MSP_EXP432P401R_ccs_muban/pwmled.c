@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include "pwmled.h"
 /* Statics */
+
+
 const Timer_A_ContinuousModeConfig continuousModeConfig =
 {
         TIMER_A_CLOCKSOURCE_ACLK,           // ACLK Clock Source
@@ -14,9 +16,9 @@ const Timer_A_ContinuousModeConfig continuousModeConfig =
         TIMER_A_DO_CLEAR                    // Clear Counter
 };
 
-void PWM_Init(){
 
-    /* Starting and enabling ACLK (32kHz) */
+
+void PWM_Init(){
     MAP_CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
     MAP_CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_4);
 
@@ -32,4 +34,6 @@ void PWM_Init(){
 
     /* Starting the Timer_A0 in continuous mode */
     MAP_Timer_A_startCounter(TIMER_A0_BASE, TIMER_A_CONTINUOUS_MODE);
+
+
 }

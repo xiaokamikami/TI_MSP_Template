@@ -53,7 +53,10 @@
 /* Standard Includes */
 #include <stdint.h>
 #include <stdbool.h>
+#include "pwmled.h"
+#include "Key.h"
 
+static uint8_t key_mode = 0;
 //![Simple GPIO Config]
 int main(void)
 {
@@ -62,25 +65,74 @@ int main(void)
     /* Halting the Watchdog */
     MAP_WDT_A_holdTimer();
 
+    //PWM_Init();
+    Key_Init();
     /* Configuring P1.0 as output */
-    PWM_Init();
+
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN0);
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN1);
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN2);
     GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
+    GPIO_setOutputLowOnPin(GPIO_PORT_P2,GPIO_PIN0);    //off
+    GPIO_setOutputLowOnPin(GPIO_PORT_P2,GPIO_PIN1);    //off
+    GPIO_setOutputLowOnPin(GPIO_PORT_P2,GPIO_PIN2);    //off
+    //使能中断
+    Interrupt_enableInterrupt(INT_PORT1);
+    Interrupt_enableSleepOnIsrExit();
+    Interrupt_enableMaster();
     while (1)
     {
+
         /* Delay Loop */
-        for(ii=0;ii<20000;ii++)
-        {
-        }
+        //for(ii=0;ii<20000;ii++)
+        //{
+        //}
 
         //GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN0);
-        GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN1);
+        //GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN2);
         //GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN2);
         //GPIO_toggleOutputOnPin(GPIO_PORT_P1, GPIO_PIN0);
+        if(key_mode == 1){
+            GPIO_setOutputHighOnPin(GPIO_PORT_P2,GPIO_PIN0);    //on
+        }
+        else if(key_mode ==2){
+            GPIO_setOutputHighOnPin(GPIO_PORT_P2,GPIO_PIN1);    //on
+        }
+        else if(key_mode ==3){
+            GPIO_setOutputHighOnPin(GPIO_PORT_P2,GPIO_PIN2);    //on
+        }
+        else{
+
+        }
+        MAP_PCM_gotoLPM0();
     }
 }
 //![Simple GPIO Config]
+void PORT1_IRQHandler(void)
+{
 
+    //中断服务
+    uint32_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P1); //获取中断状态
+    GPIO_clearInterruptFlag(GPIO_PORT_P1,status);   //清除标志位
+
+    if(status & GPIO_PIN1)
+    {
+        key_mode =1;
+    }
+    else if( status & GPIO_PIN4 )
+    {
+
+        key_mode =2;
+    }
+    else
+    {
+
+    }
+}
+
+void TA0_N_IRQHandler(void)
+{
+    MAP_Timer_A_clearInterruptFlag(TIMER_A0_BASE);
+    MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1, GPIO_PIN0);
+}
 

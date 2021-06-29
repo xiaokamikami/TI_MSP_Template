@@ -11,6 +11,7 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./gpio_toggle_output.obj" \
+"./key.obj" \
 "./pwmled.obj" \
 "./system_msp432p401r.obj" \
 "./ccs/startup_msp432p401r_ccs.obj" \
@@ -165,8 +166,8 @@ MSP_EXP432P401R_muban.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "gpio_toggle_output.obj" "pwmled.obj" "system_msp432p401r.obj" "ccs\startup_msp432p401r_ccs.obj" 
-	-$(RM) "gpio_toggle_output.d" "pwmled.d" "system_msp432p401r.d" "ccs\startup_msp432p401r_ccs.d" 
+	-$(RM) "gpio_toggle_output.obj" "key.obj" "pwmled.obj" "system_msp432p401r.obj" "ccs\startup_msp432p401r_ccs.obj" 
+	-$(RM) "gpio_toggle_output.d" "key.d" "pwmled.d" "system_msp432p401r.d" "ccs\startup_msp432p401r_ccs.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
