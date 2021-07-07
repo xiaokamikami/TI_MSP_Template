@@ -10,11 +10,13 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./gpio_toggle_output.obj" \
-"./key.obj" \
-"./pwmled.obj" \
+"./main.obj" \
 "./system_msp432p401r.obj" \
 "./ccs/startup_msp432p401r_ccs.obj" \
+"./config/gpio.obj" \
+"./config/key.obj" \
+"./config/pwm.obj" \
+"./config/pwmled.obj" \
 "../msp432p401r.cmd" \
 $(GEN_CMDS__FLAG) \
 -l"ti/display/lib/display.aem4f" \
@@ -34,8 +36,10 @@ RMDIR := RMDIR /S/Q
 -include sources.mk
 -include subdir_vars.mk
 -include ccs/subdir_vars.mk
+-include config/subdir_vars.mk
 -include subdir_rules.mk
 -include ccs/subdir_rules.mk
+-include config/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -166,8 +170,8 @@ MSP_EXP432P401R_muban.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "gpio_toggle_output.obj" "key.obj" "pwmled.obj" "system_msp432p401r.obj" "ccs\startup_msp432p401r_ccs.obj" 
-	-$(RM) "gpio_toggle_output.d" "key.d" "pwmled.d" "system_msp432p401r.d" "ccs\startup_msp432p401r_ccs.d" 
+	-$(RM) "main.obj" "system_msp432p401r.obj" "ccs\startup_msp432p401r_ccs.obj" "config\gpio.obj" "config\key.obj" "config\pwm.obj" "config\pwmled.obj" 
+	-$(RM) "main.d" "system_msp432p401r.d" "ccs\startup_msp432p401r_ccs.d" "config\gpio.d" "config\key.d" "config\pwm.d" "config\pwmled.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
