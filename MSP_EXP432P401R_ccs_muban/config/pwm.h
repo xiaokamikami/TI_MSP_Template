@@ -11,8 +11,6 @@
 
 
 void PWM_Init(void);
-#define TIMER_PERIOD 127
-#define DUTY_CYCLE1 32
-#define DUTY_CYCLE2 96
+
 
 #endif /* CONFIG_PWM_H_ */

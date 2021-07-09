@@ -58,7 +58,7 @@
 #include "pwmled.h"
 #include "Key.h"
 #include "gpio.h"
-
+#include "pwm.h"
 uint8_t key_mode = 0;
 //![Simple GPIO Config]
 int main(void)
@@ -71,7 +71,7 @@ int main(void)
     //PWMLED_Init();
     Key_Init();
     GPIO_Init();
-
+    PWM_Init();
     //Ê¹ÄÜÖÐ¶Ï
     Interrupt_enableInterrupt(INT_PORT1);
 

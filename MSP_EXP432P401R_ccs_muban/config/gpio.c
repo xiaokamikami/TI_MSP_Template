@@ -8,12 +8,12 @@
 
 void GPIO_Init(){
 
-   // GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN0);
-   // GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN1);
+    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN0);
+    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN1);
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN2);
     GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
-   // GPIO_setOutputLowOnPin(GPIO_PORT_P2,GPIO_PIN0);    //off
-   // GPIO_setOutputLowOnPin(GPIO_PORT_P2,GPIO_PIN1);    //off
+    GPIO_setOutputLowOnPin(GPIO_PORT_P2,GPIO_PIN0);    //off
+    GPIO_setOutputLowOnPin(GPIO_PORT_P2,GPIO_PIN1);    //off
     GPIO_setOutputLowOnPin(GPIO_PORT_P2,GPIO_PIN2);    //off
 
 }
