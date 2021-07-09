@@ -6,11 +6,7 @@
  */
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 
-#define TIMER_PERIOD 640
-#define DUTY_CYCLE1 32
-#define DUTY_CYCLE2 96
-
-void PWM_Init(void){
+#define TIMER_PERIOD 320
     Timer_A_PWMConfig pwmConfig1 =
     {
 
@@ -29,8 +25,11 @@ void PWM_Init(void){
             TIMER_PERIOD,
             TIMER_A_CAPTURECOMPARE_REGISTER_2,
             TIMER_A_OUTPUTMODE_RESET_SET,
-            500
+            100
     };
+
+void PWM_Init(void){
+
     //![Simple Timer_A Example]
     /* Setting MCLK to REFO at 128Khz for LF mode
      * Setting SMCLK to 64Khz */
@@ -44,6 +43,19 @@ void PWM_Init(void){
             GPIO_PRIMARY_MODULE_FUNCTION);
 
 
+    MAP_Timer_A_generatePWM(TIMER_A0_BASE, &pwmConfig1);
+    MAP_Timer_A_generatePWM(TIMER_A0_BASE, &pwmConfig2);
+}
+
+
+// Duty = 100%-0%
+void PWM_Duty(int Duty1,int Duty2){
+    int Dy1,Dy2;
+
+    Dy1 = (TIMER_PERIOD*(Duty1/100));
+    Dy2 = (TIMER_PERIOD*(Duty2/100));
+    pwmConfig1.dutyCycle = Dy1;
+    pwmConfig2.dutyCycle = Dy2;
     MAP_Timer_A_generatePWM(TIMER_A0_BASE, &pwmConfig1);
     MAP_Timer_A_generatePWM(TIMER_A0_BASE, &pwmConfig2);
 }

@@ -11,6 +11,6 @@
 
 
 void PWM_Init(void);
-
+void PWM_Duty(int Duty1,int Duty2);
 
 #endif /* CONFIG_PWM_H_ */

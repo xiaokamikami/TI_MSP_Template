@@ -59,11 +59,13 @@
 #include "Key.h"
 #include "gpio.h"
 #include "pwm.h"
-uint8_t key_mode = 0;
+static uint8_t key_mode = 0;
+static uint8_t ducty1 = 0,ducty2 = 0;
 //![Simple GPIO Config]
 int main(void)
 {
     volatile uint32_t ii;
+
 
     MAP_WDT_A_holdTimer();
 
@@ -99,6 +101,7 @@ int main(void)
             GPIO_setOutputHighOnPin(GPIO_PORT_P2,GPIO_PIN2);
             GPIO_setOutputLowOnPin(GPIO_PORT_P2,GPIO_PIN0);
             GPIO_setOutputLowOnPin(GPIO_PORT_P2,GPIO_PIN1);
+            key_mode = 0;
         }
         //MAP_PCM_gotoLPM0();
     }
@@ -114,12 +117,24 @@ void PORT1_IRQHandler(void)
     if(status & GPIO_PIN1)
     {
         key_mode ++;
+        ducty1 +=20;
+        ducty2 +=10;
+
 
     }
     else if( status & GPIO_PIN4 )
     {
 
-        key_mode --;
+        if(ducty1 > 100)
+        {
+            ducty1 =0;
+        }
+        if(ducty2 > 100)
+        {
+            ducty2 =0;
+        }
+
+        PWM_Duty(ducty1,ducty2);
     }
     else
     {
