@@ -5,7 +5,7 @@
  *      Author: 13173
  */
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
-
+#include "math.h"
 #define TIMER_PERIOD 320
     Timer_A_PWMConfig pwmConfig1 =
     {
@@ -38,7 +38,7 @@ void PWM_Init(void){
     MAP_CS_initClockSignal(CS_SMCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
     MAP_PCM_setPowerState(PCM_AM_LF_VCORE0);
 
-    // Configuring GPIO2.4 as peripheral output for PWM
+    // Configuring GPIO2.4 and GPIO2.5 as peripheral output for PWM
     MAP_GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P2, GPIO_PIN4|GPIO_PIN5,
             GPIO_PRIMARY_MODULE_FUNCTION);
 
@@ -51,10 +51,10 @@ void PWM_Init(void){
 // Duty = 100%-0%
 void PWM_Duty(int Duty1,int Duty2){
     int Dy1,Dy2;
-
-    Dy1 = (TIMER_PERIOD*(Duty1/100));
-    Dy2 = (TIMER_PERIOD*(Duty2/100));
-    pwmConfig1.dutyCycle = Dy1;
+    int ls = TIMER_PERIOD/100;
+    Dy1 = Duty1 *ls;
+    Dy2 = Duty2 *ls;
+    pwmConfig1.dutyCycle =  Dy1;
     pwmConfig2.dutyCycle = Dy2;
     MAP_Timer_A_generatePWM(TIMER_A0_BASE, &pwmConfig1);
     MAP_Timer_A_generatePWM(TIMER_A0_BASE, &pwmConfig2);

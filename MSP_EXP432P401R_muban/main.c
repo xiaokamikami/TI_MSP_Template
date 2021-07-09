@@ -117,14 +117,13 @@ void PORT1_IRQHandler(void)
     if(status & GPIO_PIN1)
     {
         key_mode ++;
-        ducty1 +=20;
-        ducty2 +=10;
 
 
     }
     else if( status & GPIO_PIN4 )
     {
-
+        ducty1 +=20;
+        ducty2 +=10;
         if(ducty1 > 100)
         {
             ducty1 =0;
