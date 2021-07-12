@@ -59,6 +59,7 @@
 #include "Key.h"
 #include "gpio.h"
 #include "pwm.h"
+#include "usart.h"
 static uint8_t key_mode = 0;
 static uint8_t ducty1 = 0,ducty2 = 0;
 //![Simple GPIO Config]
@@ -68,12 +69,19 @@ int main(void)
 
 
     MAP_WDT_A_holdTimer();
+   // SystemInit();
+    FlashCtl_setWaitState(FLASH_BANK0, 1);
+    FlashCtl_setWaitState(FLASH_BANK1, 1);
+    MAP_PCM_setCoreVoltageLevel(PCM_VCORE1);
+    CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_48);
+    //MAP_CS_initClockSignal(CS_SMCLK, CS_HFXTCLK_SELECT, CS_CLOCK_DIVIDER_1);
 
     /*   初始化        */
     //PWMLED_Init();
     Key_Init();
     GPIO_Init();
     PWM_Init();
+    USART_Init();
     //使能中断
     Interrupt_enableInterrupt(INT_PORT1);
 
@@ -106,7 +114,8 @@ int main(void)
         //MAP_PCM_gotoLPM0();
     }
 }
-//![Simple GPIO Config]
+
+//![GPIO IRQHandlerReBack]
 void PORT1_IRQHandler(void)
 {
     //中断服务
@@ -148,3 +157,16 @@ void TA0_N_IRQHandler(void)
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1, GPIO_PIN0);
 }
 
+/* EUSCI A0 UART ISR - Echos data back to PC host */
+void EUSCIA2_IRQHandler(void)
+{
+    uint32_t status = MAP_UART_getEnabledInterruptStatus(EUSCI_A2_BASE);
+
+    if(status & EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG)
+    {
+
+        MAP_UART_transmitData(EUSCI_A2_BASE, MAP_UART_receiveData(EUSCI_A2_BASE));
+
+    }
+
+}

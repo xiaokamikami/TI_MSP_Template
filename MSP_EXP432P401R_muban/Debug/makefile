@@ -17,6 +17,7 @@ ORDERED_OBJS += \
 "./config/key.obj" \
 "./config/pwm.obj" \
 "./config/pwmled.obj" \
+"./config/usart.obj" \
 "../msp432p401r.cmd" \
 $(GEN_CMDS__FLAG) \
 -l"ti/display/lib/display.aem4f" \
@@ -170,8 +171,8 @@ MSP_EXP432P401R_muban.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "system_msp432p401r.obj" "ccs\startup_msp432p401r_ccs.obj" "config\gpio.obj" "config\key.obj" "config\pwm.obj" "config\pwmled.obj" 
-	-$(RM) "main.d" "system_msp432p401r.d" "ccs\startup_msp432p401r_ccs.d" "config\gpio.d" "config\key.d" "config\pwm.d" "config\pwmled.d" 
+	-$(RM) "main.obj" "system_msp432p401r.obj" "ccs\startup_msp432p401r_ccs.obj" "config\gpio.obj" "config\key.obj" "config\pwm.obj" "config\pwmled.obj" "config\usart.obj" 
+	-$(RM) "main.d" "system_msp432p401r.d" "ccs\startup_msp432p401r_ccs.d" "config\gpio.d" "config\key.d" "config\pwm.d" "config\pwmled.d" "config\usart.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
